@@ -1,11 +1,11 @@
 package Classes;
 
-import Interface.StudentErolmentManager;
+import Interface.StudentEnrollmentManager;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class EnrolmentList implements StudentErolmentManager {
-    private ArrayList<StudentEnrolment> list;
+public class EnrolmentList implements StudentEnrollmentManager {
+    private List<StudentEnrollment> studentEnrollmentList;
 
     @Override
     public void add() {
@@ -23,12 +23,12 @@ public class EnrolmentList implements StudentErolmentManager {
     }
 
     @Override
-    public StudentEnrolment getOne() {
+    public StudentEnrollment getOne() {
         return null;
     }
 
     @Override
-    public ArrayList<StudentEnrolment> getAll() {
+    public List<StudentEnrollment> getAll() {
         return null;
     }
 }
