@@ -6,6 +6,14 @@ public class StudentEnrollment {
     private String semester;
 
 
+    public StudentEnrollment(Student student, Course course, String semester) {
+        this.student = student;
+        this.course = course;
+        this.semester = semester;
+    }
 
-
+    @Override
+    public String toString() {
+        return student.toString() + "  " + course.toString() + " Sem:" + semester;
+    }
 }

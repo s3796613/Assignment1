@@ -37,4 +37,17 @@ public class Console {
         return input;
     }
 
+    private static String extractID(String id) {
+        int tempID;
+        id = id.substring(1);
+        return id;
+    }
+
+    public static String validateID(String prompt) {
+        System.out.println(prompt);
+        String input = scanner.nextLine();
+        input = extractID(input);
+        return  input;
+    }
+
 }
