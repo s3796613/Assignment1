@@ -2,6 +2,7 @@ package Classes;
 
 import Interface.StudentEnrollmentManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnrolmentList implements StudentEnrollmentManager {
@@ -36,11 +37,25 @@ public class EnrolmentList implements StudentEnrollmentManager {
     }
 
 
+    //Single-ton
     public static EnrolmentList getInstance() {
         if (instance == null) {
             instance = new EnrolmentList();
         }
         return instance;
+    }
+
+
+    //Get the enrolled courses in one semester of a student by their id
+    public List<Course> getEnrolledCourse(int index, String semester) {
+        String sID = studentList.get(index).getId();
+        List<Course> enrolledCourse = new ArrayList<>();
+        for (StudentEnrollment enrollment : studentEnrollmentList) {
+            if (sID.equals(enrollment.getStudent().getId()) && semester.equals(enrollment.getSemester())) {
+                enrolledCourse.add(enrollment.getCourse());
+            }
+        }
+        return enrolledCourse;
     }
 
 

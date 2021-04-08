@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Console {
@@ -37,17 +39,45 @@ public class Console {
         return input;
     }
 
-    private static String extractID(String id) {
-        int tempID;
-        id = id.substring(1);
-        return id;
+
+    //return the index of object in the list by ID
+    public static int validateID(String prompt, List<Student> studentList) {
+        String input = input(prompt);
+        while (true) {
+            for (Student student : studentList) {
+                if (input.equals(student.getId())) {
+                    System.out.println("You are viewing: " + input);
+                    return studentList.indexOf(student);
+                }
+            }
+            input = input("ID not found, type again: ");
+        }
+
     }
 
-    public static String validateID(String prompt) {
+    public static int validateCourseID(String prompt, List<Course> courseList) {
+        String input = input(prompt);
+        while (true) {
+            for (Course course : courseList) {
+                if (input.equals(course.getId())) {
+
+                    return courseList.indexOf(course);
+                }
+            }
+            input = input("No course found with that ID, try again: ");
+        }
+    }
+
+    public static String input(String prompt) {
+
         System.out.println(prompt);
         String input = scanner.nextLine();
-        input = extractID(input);
-        return  input;
+        return input;
+    }
+
+    public static int getIndexObj(Object o,List list) {
+        int index = list.indexOf(o);
+        return 0;
     }
 
 }
