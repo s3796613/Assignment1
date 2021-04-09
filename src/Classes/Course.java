@@ -16,30 +16,19 @@ public class Course {
     }
 
 
-    //Getters and Setters
+    //Getters
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getNumberOfCredits() {
         return numberOfCredits;
     }
 
-    public void setNumberOfCredits(String numberOfCredits) {
-        this.numberOfCredits = numberOfCredits;
-    }
 
     @Override
     public String toString() {

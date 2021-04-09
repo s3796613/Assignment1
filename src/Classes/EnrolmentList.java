@@ -28,10 +28,6 @@ public class EnrolmentList implements StudentEnrollmentManager {
         this.courseList = courseList;
     }
 
-    public List<StudentEnrollment> getStudentEnrollmentList() {
-        return studentEnrollmentList;
-    }
-
     public void setStudentEnrollmentList(List<StudentEnrollment> studentEnrollmentList) {
         this.studentEnrollmentList = studentEnrollmentList;
     }
@@ -58,6 +54,14 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return enrolledCourse;
     }
 
+//    public List<Integer> getStudentEnrollmentIndex(int studentIndex, String semester) {
+//        String sID = studentList.get(studentIndex).getId();
+//        List<Integer> enrollmentIndex = new ArrayList<>();
+//        for (StudentEnrollment enrollment : studentEnrollmentList) {
+//            if (sID.equals(enrollment.getStudent().getId()))
+//        }
+//    }
+
 
 
     @Override
@@ -65,24 +69,33 @@ public class EnrolmentList implements StudentEnrollmentManager {
         studentEnrollmentList.add(enrollment);
     }
 
+    //update one enrollment of a student
     @Override
-    public void update(StudentEnrollment enrollment) {
+    public void update(int index) {
+        int courseIndex = Console.validateCourseID("Type in course ID: ",courseList);
+        Course updatedCourse = courseList.get(courseIndex);
+        String semester = Console.semesterInput();
+        studentEnrollmentList.get(index).setCourse(updatedCourse);
+        studentEnrollmentList.get(index).setSemester(semester);
 
     }
 
+    //delete one enrollment
     @Override
-    public void delete(StudentEnrollment enrollment) {
-
+    public void delete(int index) {
+        studentEnrollmentList.remove(index);
     }
 
+    //return one enrollment
     @Override
-    public StudentEnrollment getOne() {
-        return null;
+    public StudentEnrollment getOne(int index) {
+        return studentEnrollmentList.get(index);
     }
 
+    //get all enrollment
     @Override
     public List<StudentEnrollment> getAll() {
-        return null;
+        return studentEnrollmentList;
     }
 
 

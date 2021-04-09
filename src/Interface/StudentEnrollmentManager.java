@@ -6,10 +6,8 @@ import java.util.List;
 
 public interface StudentEnrollmentManager {
     void add(StudentEnrollment enrollment);
-    void update(StudentEnrollment enrollment);
-    void delete(StudentEnrollment enrollment);
-
-    StudentEnrollment getOne();
-
+    void update(int index);
+    void delete(int index);
+    StudentEnrollment getOne(int index);
     List<StudentEnrollment> getAll();
 }
