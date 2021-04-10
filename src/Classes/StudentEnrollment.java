@@ -41,4 +41,8 @@ public class StudentEnrollment {
     public String toString() {
         return student.toString() + "  " + course.toString() + " Sem:" + semester;
     }
+
+    public String[] objectToString() {
+        return new String[]{student.getId(), student.getName(), student.getBirthDate(), course.getId(), course.getName(), course.getNumberOfCredits(), semester};
+    }
 }

@@ -1,8 +1,6 @@
 package Classes;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,10 +59,51 @@ public class FileManager {
             }
 
         } catch (IOException ioe) {
+            System.out.println("File not found!");
             ioe.printStackTrace();
         }
 
         return data;
+    }
+
+
+    public static void writeEnrollmentToCSV(List<StudentEnrollment> studentEnrollmentList, String fileName) throws IOException {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName,false));){
+
+            List<String[]> dataToWrite = new ArrayList<>();
+            for (StudentEnrollment studentEnrollment : studentEnrollmentList) {
+                dataToWrite.add(studentEnrollment.objectToString());
+            }
+            for (String[] tokens : dataToWrite) {
+                pw.write(String.join(",",tokens));
+                pw.println();
+            }
+
+        }
+        catch (FileNotFoundException exception) {
+            System.out.println("Error occur while saving");
+            exception.printStackTrace();
+        }
+
+
+    }
+
+    //
+    public static void saveAsCSVFile(List<String[]> data, String fileName) throws IOException {
+        fileName = fileName.concat(".csv");
+//        System.out.println("Type in file name *.csv and cant be default.csv");
+//        do {
+//            fileName = Console.input("Type in file name: ");
+//        } while (fileName.equals("DEFAULT.CSV") || !fileName.matches("^.*\\.(CSV)$"));
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName,false))) {
+            for (String[] tokens : data) {
+                pw.write(String.join(",",tokens));
+                pw.println();
+            }
+        } catch (FileNotFoundException exception) {
+            System.out.println("Error occur");
+            exception.printStackTrace();
+        }
     }
 
     //Convert string data to course object and store it in a list

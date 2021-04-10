@@ -32,8 +32,8 @@ public class Student {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "ID: " + id + "   Name: " + name + "   DOB: " + birthDate;
+
+    public String[] objectToString() {
+        return new String[]{id,name,birthDate};
     }
 }

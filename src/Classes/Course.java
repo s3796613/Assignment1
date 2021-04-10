@@ -34,4 +34,8 @@ public class Course {
     public String toString() {
         return "Course ID: " + id + " " + name + "  Credit: " + numberOfCredits;
     }
+
+    public String[] objectToString() {
+        return new String[]{id,name,numberOfCredits};
+    }
 }

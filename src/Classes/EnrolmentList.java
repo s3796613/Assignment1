@@ -42,9 +42,21 @@ public class EnrolmentList implements StudentEnrollmentManager {
     }
 
 
+    //Return course offered in a semester
+    public List<Course> getEnrolledCourse(String semester) {
+        List<Course> enrolledCourse = new ArrayList<>();
+        for (StudentEnrollment enrollment : studentEnrollmentList) {
+            if (semester.equals(enrollment.getSemester())) {
+                enrolledCourse.add(enrollment.getCourse());
+            }
+        }
+        return enrolledCourse;
+    }
+
+
     //Get the enrolled courses in one semester of a student by their id
-    public List<Course> getEnrolledCourse(int index, String semester) {
-        String sID = studentList.get(index).getId();
+    public List<Course> getEnrolledCourse(int studentIndex, String semester) {
+        String sID = studentList.get(studentIndex).getId();
         List<Course> enrolledCourse = new ArrayList<>();
         for (StudentEnrollment enrollment : studentEnrollmentList) {
             if (sID.equals(enrollment.getStudent().getId()) && semester.equals(enrollment.getSemester())) {
@@ -54,13 +66,23 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return enrolledCourse;
     }
 
-//    public List<Integer> getStudentEnrollmentIndex(int studentIndex, String semester) {
-//        String sID = studentList.get(studentIndex).getId();
-//        List<Integer> enrollmentIndex = new ArrayList<>();
-//        for (StudentEnrollment enrollment : studentEnrollmentList) {
-//            if (sID.equals(enrollment.getStudent().getId()))
-//        }
-//    }
+    //get the students enrolled in a course in one semester
+    public List<Student> getEnrolledStudent(int courseIndex, String semester) {
+        String courseID = courseList.get(courseIndex).getId();
+        List<Student> enrolledStudent = new ArrayList<>();
+        for (StudentEnrollment enrollment : studentEnrollmentList) {
+            if (courseID.equals(enrollment.getCourse().getId()) && semester.equals(enrollment.getSemester())) {
+                enrolledStudent.add(enrollment.getStudent());
+            }
+        }
+        return enrolledStudent;
+    }
+
+
+
+
+
+
 
 
 
