@@ -78,6 +78,17 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return enrolledStudent;
     }
 
+    public List<StudentEnrollment> getAllEnrollmentOfStudent(int studentIndex) {
+        String sID = studentList.get(studentIndex).getId();
+        List<StudentEnrollment> enrollmentList = new ArrayList<>();
+        for (StudentEnrollment enrollment : studentEnrollmentList) {
+            if (sID.equals(enrollment.getStudent().getId())) {
+                enrollmentList.add(enrollment);
+            }
+        }
+        return enrollmentList;
+    }
+
 
 
 
@@ -94,6 +105,7 @@ public class EnrolmentList implements StudentEnrollmentManager {
     //update one enrollment of a student
     @Override
     public void update(int index) {
+        Console.displayCourseList();
         int courseIndex = Console.validateCourseID("Type in course ID: ",courseList);
         Course updatedCourse = courseList.get(courseIndex);
         String semester = Console.semesterInput();
