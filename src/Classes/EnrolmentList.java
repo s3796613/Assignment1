@@ -4,6 +4,7 @@ import Interface.StudentEnrollmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EnrolmentList implements StudentEnrollmentManager {
     private static EnrolmentList instance = null;
@@ -44,10 +45,21 @@ public class EnrolmentList implements StudentEnrollmentManager {
 
     //Return course offered in a semester
     public List<Course> getEnrolledCourse(String semester) {
+        List<String> courseID = new ArrayList<>();
         List<Course> enrolledCourse = new ArrayList<>();
         for (StudentEnrollment enrollment : studentEnrollmentList) {
             if (semester.equals(enrollment.getSemester())) {
-                enrolledCourse.add(enrollment.getCourse());
+                courseID.add(enrollment.getCourse().getId());
+            }
+        }
+
+        //Sort out duplicate course object in list
+        List<String> uniqueCourseIDs = courseID.stream().distinct().sorted().collect(Collectors.toList());
+        for (String uniqueID : uniqueCourseIDs) {
+            for (Course course : courseList) {
+                if (uniqueID.equals(course.getId())) {
+                    enrolledCourse.add(course);
+                }
             }
         }
         return enrolledCourse;
@@ -87,6 +99,28 @@ public class EnrolmentList implements StudentEnrollmentManager {
             }
         }
         return enrollmentList;
+    }
+
+    public List<String> getStudentSemester(int studentIndex) {
+        List<String> semesters = new ArrayList<>();
+        String studentID = studentList.get(studentIndex).getId();
+        for (StudentEnrollment enrollment : studentEnrollmentList) {
+            if (studentID.equals(enrollment.getStudent().getId())) {
+                semesters.add(enrollment.getSemester());
+            }
+        }
+        return semesters;
+    }
+
+    public List<String> getCourseSemester(int courseIndex) {
+        List<String> semesters = new ArrayList<>();
+        String courseID = courseList.get(courseIndex).getId();
+        for (StudentEnrollment enrollment: studentEnrollmentList) {
+            if (courseID.equals(enrollment.getCourse().getId())) {
+                semesters.add(enrollment.getSemester());
+            }
+        }
+        return semesters;
     }
 
 

@@ -4,7 +4,9 @@ import Classes.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     public static int menu() {
@@ -14,7 +16,7 @@ public class Main {
         System.out.println("3. View report");
         System.out.println("4. Exit");
 
-        return Console.validateInt("Type in your choice (1-4): ");
+        return Console.validateInt("Type in your choice (1-4): ",1,4);
 
     }
 
@@ -59,6 +61,68 @@ public class Main {
         System.out.println("Update successfully!");
     }
 
+    public static void reportMenu() throws IOException {
+        List<String[]> data = new ArrayList<>();
+        String semester;
+        System.out.println("1. Report of a student");
+        System.out.println("2. Report of students in a course");
+        System.out.println("3. All course offered in a semester");
+        int choice = Console.validateInt("Your selection (1-3): ",1,3);
+        switch (choice) {
+            case 1 -> {
+                Console.displayStudentList();
+                int studentIndex = Console.validateID("Type in student ID: ", EnrolmentList.getInstance().getStudentList());
+                System.out.println("Enrolled semester:");
+                List<String> semesters = EnrolmentList.getInstance().getStudentSemester(studentIndex);
+                Console.displayObjectByIndex(semesters);
+                int semesterIndex = Console.validateInt("Select: ", 0, semesters.size() - 1);
+                semester = semesters.get(semesterIndex);
+                List<Course> enrolledCourse = EnrolmentList.getInstance().getEnrolledCourse(studentIndex, semester);
+                for (Course course : enrolledCourse) {
+                    data.add(course.objectToString());
+                }
+                Console.displayObjectByIndex(enrolledCourse);
+            }
+            case 2 -> {
+                Console.displayCourseList();
+                int courseIndex = Console.validateCourseID("Type in course ID: ", EnrolmentList.getInstance().getCourseList());
+                System.out.println("Semester: ");
+                List<String> semesters = EnrolmentList.getInstance().getCourseSemester(courseIndex);
+                int semesterIndex = Console.validateInt("Selection: ", 0, semesters.size() - 1);
+                semester = semesters.get(semesterIndex);
+                List<Student> students = EnrolmentList.getInstance().getEnrolledStudent(courseIndex, semester);
+                for (Student student : students) {
+                    data.add(student.objectToString());
+                }
+                Console.displayObjectByIndex(students);
+            }
+            default -> {
+                semester = Console.semesterInput();
+                List<Course> courseList = EnrolmentList.getInstance().getEnrolledCourse(semester);
+
+                Console.displayObjectByIndex(courseList);
+                for (Course course : courseList) {
+                    data.add(course.objectToString());
+                }
+            }
+        }
+        if (data.isEmpty()) {
+            System.out.println("Nothing to export...");
+        } else {
+            System.out.println("Save as csv file?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+            choice = Console.validateInt("Your selection: ");
+            if (choice == 1) {
+                FileManager.saveAsCSVFile(data, semester);
+                System.out.println("File save as " + semester + ".csv");
+            } else {
+                System.out.println("Returning to main menu....");
+            }
+        }
+
+    }
+
     public static void main(String[] args) throws IOException {
 	// write your code here
         //Load data from csv files
@@ -94,7 +158,7 @@ public class Main {
             switch (choice) {
                 case 1 -> addEnrollmentMenu(enrollmentFile);
                 case 2 -> updateEnrollmentMenu(enrollmentFile);
-                case 3 -> System.exit(0);
+                case 3 -> reportMenu();
                 default -> {
                     System.out.println("shutting down...");
                     System.exit(0);
