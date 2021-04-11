@@ -40,9 +40,20 @@ public class FileManager {
 
     //Create Student enrollment object from string data
     public static StudentEnrollment createEnrolment(String[] data) {
-        String[] studentData = {data[0],data[1],data[2]};
-        String[] courseData = {data[3],data[4],data[5]};
-        String enrollSemester = data[6];
+        String[] studentData = new String[3];
+        String[] courseData = new String[3];
+        String enrollSemester = null;
+        try {
+            studentData = new String[]{data[0], data[1], data[2]};
+            courseData = new String[]{data[3], data[4], data[5]};
+            enrollSemester = data[6];
+
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            System.out.println("The file is empty or invalid data format");
+            System.out.println("Shutting down the program.....");
+            System.exit(0);
+        }
+
         return new StudentEnrollment(createStudent(studentData),createCourse(courseData),enrollSemester);
     }
 
@@ -59,8 +70,14 @@ public class FileManager {
             }
 
         } catch (IOException ioe) {
-            System.out.println("File not found!");
+            System.out.println("File not found");
+            System.out.println("Ending the program....");
             ioe.printStackTrace();
+            System.exit(0);
+        }
+        if (data.size() == 0) {
+            System.out.println("The file data is empty or the format is invalid");
+            System.exit(0);
         }
 
         return data;

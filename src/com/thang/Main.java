@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class Main {
     public static int menu() {
-        System.out.println("MAIN MENU");
+        System.out.println("---------MAIN MENU---------");
         System.out.println("1. Add a new enrollment");
         System.out.println("2. Edit an enrollment");
         System.out.println("3. View report");
@@ -64,42 +64,50 @@ public class Main {
     public static void reportMenu() throws IOException {
         List<String[]> data = new ArrayList<>();
         String semester;
-        System.out.println("1. Report of a student");
-        System.out.println("2. Report of students in a course");
+        String fileName = "";
+        System.out.println("===============================");
+        System.out.println("1. All enrollment of a student");
+        System.out.println("2. All students in a course");
         System.out.println("3. All course offered in a semester");
         int choice = Console.validateInt("Your selection (1-3): ",1,3);
         switch (choice) {
             case 1 -> {
                 Console.displayStudentList();
                 int studentIndex = Console.validateID("Type in student ID: ", EnrolmentList.getInstance().getStudentList());
-                System.out.println("Enrolled semester:");
+                fileName = EnrolmentList.getInstance().getStudentList().get(studentIndex).getId().concat("_");
+                System.out.println("This student enrolled in these semester:");
                 List<String> semesters = EnrolmentList.getInstance().getStudentSemester(studentIndex);
                 Console.displayObjectByIndex(semesters);
-                int semesterIndex = Console.validateInt("Select: ", 0, semesters.size() - 1);
+                int semesterIndex = Console.validateInt("Select the semester you want to view (index number): ", 0, semesters.size() - 1);
                 semester = semesters.get(semesterIndex);
                 List<Course> enrolledCourse = EnrolmentList.getInstance().getEnrolledCourse(studentIndex, semester);
                 for (Course course : enrolledCourse) {
                     data.add(course.objectToString());
                 }
+                System.out.println("Course this student enrolled: ");
                 Console.displayObjectByIndex(enrolledCourse);
             }
             case 2 -> {
                 Console.displayCourseList();
                 int courseIndex = Console.validateCourseID("Type in course ID: ", EnrolmentList.getInstance().getCourseList());
-                System.out.println("Semester: ");
+                fileName = EnrolmentList.getInstance().getCourseList().get(courseIndex).getId().concat("_");
+                System.out.println("Semester this course offered: ");
                 List<String> semesters = EnrolmentList.getInstance().getCourseSemester(courseIndex);
+                Console.displayObjectByIndex(semesters);
                 int semesterIndex = Console.validateInt("Selection: ", 0, semesters.size() - 1);
                 semester = semesters.get(semesterIndex);
                 List<Student> students = EnrolmentList.getInstance().getEnrolledStudent(courseIndex, semester);
                 for (Student student : students) {
                     data.add(student.objectToString());
                 }
+                System.out.println("Student in enrolled " + EnrolmentList.getInstance().getCourseList().get(courseIndex).getName() + " semester " + semester);
                 Console.displayObjectByIndex(students);
+
             }
             default -> {
                 semester = Console.semesterInput();
                 List<Course> courseList = EnrolmentList.getInstance().getEnrolledCourse(semester);
-
+                System.out.println("Course offered in semester " + semester);
                 Console.displayObjectByIndex(courseList);
                 for (Course course : courseList) {
                     data.add(course.objectToString());
@@ -107,15 +115,20 @@ public class Main {
             }
         }
         if (data.isEmpty()) {
+            System.out.println("No data found!");
             System.out.println("Nothing to export...");
         } else {
+            System.out.println("-----------------------");
             System.out.println("Save as csv file?");
             System.out.println("1. Yes");
             System.out.println("2. No");
             choice = Console.validateInt("Your selection: ");
             if (choice == 1) {
-                FileManager.saveAsCSVFile(data, semester);
-                System.out.println("File save as " + semester + ".csv");
+                String saveName = fileName.concat(semester);
+                FileManager.saveAsCSVFile(data, saveName);
+                System.out.println("File save as " + saveName + ".csv");
+                System.out.println("Exiting.....");
+                System.exit(0);
             } else {
                 System.out.println("Returning to main menu....");
             }
@@ -135,7 +148,7 @@ public class Main {
         EnrolmentList.getInstance().setStudentList(FileManager.stringToStudentObj(studentData));
 
 
-
+        System.out.println("-----------------------------------------");
         System.out.println("Do you want to load any enrollment data?");
         System.out.println("1. Yes");
         System.out.println("2. No");
@@ -165,92 +178,6 @@ public class Main {
                 }
             }
         }
-
-
-
-
-//
-//        String testFile = "test2.csv";
-//        List<String[]> courseData = FileManager.readFileCSV(courseFile);
-//        List<String[]> studentData = FileManager.readFileCSV(studentFile);
-//        List<String[]> enrollmentData = FileManager.readFileCSV(enrollmentFile);
-//
-//        EnrolmentList listManage = EnrolmentList.getInstance();
-//        listManage.setCourseList(FileManager.stringToCourseObj(courseData));
-//        listManage.setStudentList(FileManager.stringToStudentObj(studentData));
-//        listManage.setStudentEnrollmentList(FileManager.stringToEnrollmentObj(enrollmentData));
-//
-//        FileManager.writeEnrollmentToCSV(listManage.getAll(),testFile);
-//        System.out.println("Save student list as new file?");
-//        System.out.println("1. Yes");
-//        System.out.println("2. No");
-//        choice = Console.validateInt("Your choice (1/2): ",1,2);
-//        if (choice == 1) {
-//            FileManager.saveAsCSVFile(studentData,listManage.getStudentList().get(0).getId());
-//        }
-
-
-
-//
-//        Console.displayEnrollmentList();
-//        int index = Console.validateID("Type in id: ",listManage.getStudentList());
-//        Console.displayCourseList();
-//        int cindex = Console.validateCourseID("Course ID: ",listManage.getCourseList());
-//        String a = Console.semesterInput();
-//
-//
-//
-//        //add new enrollment
-//        StudentEnrollment enroll = new StudentEnrollment(listManage.getStudentList().get(index),listManage.getCourseList().get(cindex),a);
-//        listManage.add(enroll);
-//        System.out.println("Enrollment successful!");
-//
-//        Console.displayEnrollmentList();
-//
-//
-//
-//        //view enrolled courses
-//        index = Console.validateID("Type in id: ",listManage.getStudentList());
-//
-//        String sem = Console.semesterInput();
-//
-//
-//        List<Course> enrolledCourse = listManage.getEnrolledCourse(index,sem);
-//
-//        System.out.println("Enrolled courses in sem " + sem);
-//        Console.displayObjectByIndex(enrolledCourse);
-//
-//        int courseInt = Console.validateInt("Choose course to update: ",0,enrolledCourse.size()-1);
-//        String selectedStudentId = EnrolmentList.getInstance().getStudentList().get(index).getId();
-//        String selectedCourseID = enrolledCourse.get(courseInt).getId();
-//
-//        //update a student enrollment
-//        int enrollIndex = Console.getEnrollmentIndex(selectedStudentId,selectedCourseID,sem);
-//        EnrolmentList.getInstance().update(enrollIndex);
-//
-//        Console.displayEnrollmentList();
-//
-//        index = Console.validateID("Type in id: ",listManage.getStudentList());
-//        sem = Console.semesterInput();
-//        enrolledCourse = listManage.getEnrolledCourse(index,sem);
-//        System.out.println("Enrolled courses in sem " + sem);
-//        Console.displayObjectByIndex(enrolledCourse);
-//
-//
-//        courseInt = Console.validateInt("Choose course to delete: ",0,enrolledCourse.size()-1);
-//        selectedStudentId = EnrolmentList.getInstance().getStudentList().get(index).getId();
-//        selectedCourseID = enrolledCourse.get(courseInt).getId();
-//        enrollIndex = Console.getEnrollmentIndex(selectedStudentId,selectedCourseID,sem);
-//        EnrolmentList.getInstance().delete(enrollIndex);
-//
-//        Console.displayEnrollmentList();
-
-
-
-
-
-
-
 
     }
 }

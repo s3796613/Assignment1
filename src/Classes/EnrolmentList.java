@@ -114,13 +114,15 @@ public class EnrolmentList implements StudentEnrollmentManager {
 
     public List<String> getCourseSemester(int courseIndex) {
         List<String> semesters = new ArrayList<>();
+        List<String> uniqueSemesters = new ArrayList<>();
         String courseID = courseList.get(courseIndex).getId();
         for (StudentEnrollment enrollment: studentEnrollmentList) {
             if (courseID.equals(enrollment.getCourse().getId())) {
                 semesters.add(enrollment.getSemester());
             }
         }
-        return semesters;
+        uniqueSemesters = semesters.stream().distinct().sorted().collect(Collectors.toList());
+        return uniqueSemesters;
     }
 
 
