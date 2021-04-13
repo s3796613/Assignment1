@@ -23,27 +23,27 @@ public class Main {
     public static void addEnrollmentMenu(String fileName) throws IOException {
         System.out.println("----------------------------------------");
         Console.displayStudentList();
-        int studentIndex = Console.validateID("Type in student ID: ",EnrolmentList.getInstance().getStudentList());
+        int studentIndex = Console.validateID("Type in student ID: ", EnrollmentList.getInstance().getStudentList());
         Console.displayCourseList();
-        int courseIndex = Console.validateCourseID("Type in course ID: ",EnrolmentList.getInstance().getCourseList());
+        int courseIndex = Console.validateCourseID("Type in course ID: ", EnrollmentList.getInstance().getCourseList());
         String semester = Console.semesterInput();
-        StudentEnrollment newEnrollment = new StudentEnrollment(EnrolmentList.getInstance().getStudentList().get(studentIndex),
-                EnrolmentList.getInstance().getCourseList().get(courseIndex),
+        StudentEnrollment newEnrollment = new StudentEnrollment(EnrollmentList.getInstance().getStudentList().get(studentIndex),
+                EnrollmentList.getInstance().getCourseList().get(courseIndex),
                 semester);
-        EnrolmentList.getInstance().add(newEnrollment);
-        FileManager.writeEnrollmentToCSV(EnrolmentList.getInstance().getAll(), fileName);
+        EnrollmentList.getInstance().add(newEnrollment);
+        FileManager.writeEnrollmentToCSV(EnrollmentList.getInstance().getAll(), fileName);
         System.out.println("Enrollment successfully!");
     }
 
     public static void updateEnrollmentMenu(String fileName) throws IOException {
         System.out.println("---------------------");
         Console.displayStudentList();
-        int studentIndex = Console.validateID("Type in a student ID to update their enrollment",EnrolmentList.getInstance().getStudentList());
+        int studentIndex = Console.validateID("Type in a student ID to update their enrollment", EnrollmentList.getInstance().getStudentList());
         System.out.println("All enrollment of this student: ");
-        List<StudentEnrollment> enrollments = EnrolmentList.getInstance().getAllEnrollmentOfStudent(studentIndex);
+        List<StudentEnrollment> enrollments = EnrollmentList.getInstance().getAllEnrollmentOfStudent(studentIndex);
         Console.displayObjectByIndex(enrollments);
         int enrollmentIndex = Console.validateInt("Your selection: ",0,enrollments.size()-1);
-        String studentID = EnrolmentList.getInstance().getStudentList().get(studentIndex).getId();
+        String studentID = EnrollmentList.getInstance().getStudentList().get(studentIndex).getId();
         String courseID = enrollments.get(enrollmentIndex).getCourse().getId();
         String semester = enrollments.get(enrollmentIndex).getSemester();
         int enrollmentListIndex = Console.getEnrollmentIndex(studentID,courseID,semester);
@@ -52,12 +52,12 @@ public class Main {
         System.out.println("2. Delete");
         int choice = Console.validateInt("Select: ");
         if (choice == 1) {
-            EnrolmentList.getInstance().update(enrollmentListIndex);
+            EnrollmentList.getInstance().update(enrollmentListIndex);
         } else {
-            EnrolmentList.getInstance().delete(enrollmentListIndex);
+            EnrollmentList.getInstance().delete(enrollmentListIndex);
         }
 
-        FileManager.writeEnrollmentToCSV(EnrolmentList.getInstance().getAll(), fileName);
+        FileManager.writeEnrollmentToCSV(EnrollmentList.getInstance().getAll(), fileName);
         System.out.println("Update successfully!");
     }
 
@@ -73,14 +73,14 @@ public class Main {
         switch (choice) {
             case 1 -> {
                 Console.displayStudentList();
-                int studentIndex = Console.validateID("Type in student ID: ", EnrolmentList.getInstance().getStudentList());
-                fileName = EnrolmentList.getInstance().getStudentList().get(studentIndex).getId().concat("_");
+                int studentIndex = Console.validateID("Type in student ID: ", EnrollmentList.getInstance().getStudentList());
+                fileName = EnrollmentList.getInstance().getStudentList().get(studentIndex).getId().concat("_");
                 System.out.println("This student enrolled in these semester:");
-                List<String> semesters = EnrolmentList.getInstance().getStudentSemester(studentIndex);
+                List<String> semesters = EnrollmentList.getInstance().getStudentSemester(studentIndex);
                 Console.displayObjectByIndex(semesters);
                 int semesterIndex = Console.validateInt("Select the semester you want to view (index number): ", 0, semesters.size() - 1);
                 semester = semesters.get(semesterIndex);
-                List<Course> enrolledCourse = EnrolmentList.getInstance().getEnrolledCourse(studentIndex, semester);
+                List<Course> enrolledCourse = EnrollmentList.getInstance().getEnrolledCourse(studentIndex, semester);
                 for (Course course : enrolledCourse) {
                     data.add(course.objectToString());
                 }
@@ -89,24 +89,24 @@ public class Main {
             }
             case 2 -> {
                 Console.displayCourseList();
-                int courseIndex = Console.validateCourseID("Type in course ID: ", EnrolmentList.getInstance().getCourseList());
-                fileName = EnrolmentList.getInstance().getCourseList().get(courseIndex).getId().concat("_");
+                int courseIndex = Console.validateCourseID("Type in course ID: ", EnrollmentList.getInstance().getCourseList());
+                fileName = EnrollmentList.getInstance().getCourseList().get(courseIndex).getId().concat("_");
                 System.out.println("Semester this course offered: ");
-                List<String> semesters = EnrolmentList.getInstance().getCourseSemester(courseIndex);
+                List<String> semesters = EnrollmentList.getInstance().getCourseSemester(courseIndex);
                 Console.displayObjectByIndex(semesters);
                 int semesterIndex = Console.validateInt("Selection: ", 0, semesters.size() - 1);
                 semester = semesters.get(semesterIndex);
-                List<Student> students = EnrolmentList.getInstance().getEnrolledStudent(courseIndex, semester);
+                List<Student> students = EnrollmentList.getInstance().getEnrolledStudent(courseIndex, semester);
                 for (Student student : students) {
                     data.add(student.objectToString());
                 }
-                System.out.println("Student in enrolled " + EnrolmentList.getInstance().getCourseList().get(courseIndex).getName() + " semester " + semester);
+                System.out.println("Student in enrolled " + EnrollmentList.getInstance().getCourseList().get(courseIndex).getName() + " semester " + semester);
                 Console.displayObjectByIndex(students);
 
             }
             default -> {
                 semester = Console.semesterInput();
-                List<Course> courseList = EnrolmentList.getInstance().getEnrolledCourse(semester);
+                List<Course> courseList = EnrollmentList.getInstance().getEnrolledCourse(semester);
                 System.out.println("Course offered in semester " + semester);
                 Console.displayObjectByIndex(courseList);
                 for (Course course : courseList) {
@@ -144,8 +144,8 @@ public class Main {
         String enrollmentFile = "default.csv";
         List<String[]> courseData = FileManager.readFileCSV(courseFile);
         List<String[]> studentData = FileManager.readFileCSV(studentFile);
-        EnrolmentList.getInstance().setCourseList(FileManager.stringToCourseObj(courseData));
-        EnrolmentList.getInstance().setStudentList(FileManager.stringToStudentObj(studentData));
+        EnrollmentList.getInstance().setCourseList(FileManager.stringToCourseObj(courseData));
+        EnrollmentList.getInstance().setStudentList(FileManager.stringToStudentObj(studentData));
 
 
         System.out.println("-----------------------------------------");
@@ -163,7 +163,7 @@ public class Main {
 
         }
         List<String[]> enrollmentData = FileManager.readFileCSV(enrollmentFile);
-        EnrolmentList.getInstance().setStudentEnrollmentList(FileManager.stringToEnrollmentObj(enrollmentData));
+        EnrollmentList.getInstance().setStudentEnrollmentList(FileManager.stringToEnrollmentObj(enrollmentData));
         while (true) {
             Console.displayEnrollmentList();
 

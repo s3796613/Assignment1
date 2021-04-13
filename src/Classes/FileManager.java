@@ -11,16 +11,6 @@ import java.util.List;
 public class FileManager {
 
 
-    public static boolean startFile(String filePath) {
-        try {
-            File myObj = new File(filePath);
-            return myObj.createNewFile();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     //Create course object from string data
     private static Course createCourse(String[] data) {
@@ -84,6 +74,7 @@ public class FileManager {
     }
 
 
+    //write the enrollment to the current csv file
     public static void writeEnrollmentToCSV(List<StudentEnrollment> studentEnrollmentList, String fileName) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(fileName,false));){
 
@@ -105,7 +96,7 @@ public class FileManager {
 
     }
 
-    //
+    //save string data to a csv file
     public static void saveAsCSVFile(List<String[]> data, String fileName) throws IOException {
         fileName = fileName.concat(".csv");
 //        System.out.println("Type in file name *.csv and cant be default.csv");

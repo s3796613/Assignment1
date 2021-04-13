@@ -15,8 +15,13 @@ public class Student {
         this.birthDate = birthDate;
     }
 
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 
@@ -28,9 +33,7 @@ public class Student {
         return birthDate;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+
 
     @Override
     public String toString() {

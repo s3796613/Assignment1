@@ -1,6 +1,5 @@
 package Classes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -56,6 +55,7 @@ public class Console {
 
     }
 
+    //validate course id and return the course index from course list
     public static int validateCourseID(String prompt, List<Course> courseList) {
         String input = input(prompt);
         while (true) {
@@ -69,22 +69,25 @@ public class Console {
         }
     }
 
+    //get the index of enrollment in student enrollment list
     public static int getEnrollmentIndex(String studentID, String courseID, String semester) {
 
-        for (StudentEnrollment enrollment : EnrolmentList.getInstance().getAll()) {
+        for (StudentEnrollment enrollment : EnrollmentList.getInstance().getAll()) {
             if (studentID.equals(enrollment.getStudent().getId()) && courseID.equals(enrollment.getCourse().getId()) && semester.equals( enrollment.getSemester())) {
-                return EnrolmentList.getInstance().getAll().indexOf(enrollment);
+                return EnrollmentList.getInstance().getAll().indexOf(enrollment);
             }
         }
         return -1;
     }
 
 
+    //get string input from the user
     public static String input(String prompt) {
         System.out.println(prompt);
         return scanner.next().toUpperCase(Locale.ROOT);
     }
 
+    //get semester input from the user
    public static String semesterInput() {
         System.out.println("Choose the semester:");
         System.out.println("1. 2020A");
@@ -106,10 +109,11 @@ public class Console {
    }
 
 
+   //Display functions
    public static void displayStudentList() {
        System.out.printf("%-20s %-20s %-15s %n","STUDENT ID","NAME","DATE OF BIRTH");
        System.out.println("---------------------------------------------------------");
-        for (Student student : EnrolmentList.getInstance().getStudentList()) {
+        for (Student student : EnrollmentList.getInstance().getStudentList()) {
             System.out.printf("%-20s %-20s %-15s %n",student.getId(),student.getName(),student.getBirthDate());
         }
        System.out.println();
@@ -118,7 +122,7 @@ public class Console {
    public static void displayCourseList() {
        System.out.printf("%-20s %-20s %-15s %n","COURSE ID","COURSE NAME","NUMBER OF CREDIT");
        System.out.println("---------------------------------------------------------------");
-       for (Course course : EnrolmentList.getInstance().getCourseList()) {
+       for (Course course : EnrollmentList.getInstance().getCourseList()) {
            System.out.printf("%-15s %-35s %-15s %n",course.getId(),course.getName(),course.getNumberOfCredits());
        }
        System.out.println();
@@ -129,7 +133,7 @@ public class Console {
        System.out.printf("%-15s %-22s %-17s %-15s %-35s %-15s %-10s %n","SID","SNAME","BIRTHDATE","CID","CNAME","CREDIT","SEMESTER");
        System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
 
-       for (StudentEnrollment enrollment : EnrolmentList.getInstance().getAll()) {
+       for (StudentEnrollment enrollment : EnrollmentList.getInstance().getAll()) {
            String sID = enrollment.getStudent().getId();
            String sName = enrollment.getStudent().getName();
            String sDate = enrollment.getStudent().getBirthDate();

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EnrolmentList implements StudentEnrollmentManager {
-    private static EnrolmentList instance = null;
+public class EnrollmentList implements StudentEnrollmentManager {
+    private static EnrollmentList instance = null;
     private List<StudentEnrollment> studentEnrollmentList;
     private List<Student> studentList;
     private List<Course> courseList;
@@ -35,9 +35,9 @@ public class EnrolmentList implements StudentEnrollmentManager {
 
 
     //Single-ton
-    public static EnrolmentList getInstance() {
+    public static EnrollmentList getInstance() {
         if (instance == null) {
-            instance = new EnrolmentList();
+            instance = new EnrollmentList();
         }
         return instance;
     }
@@ -90,6 +90,7 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return enrolledStudent;
     }
 
+    //Get all enrollment of a student
     public List<StudentEnrollment> getAllEnrollmentOfStudent(int studentIndex) {
         String sID = studentList.get(studentIndex).getId();
         List<StudentEnrollment> enrollmentList = new ArrayList<>();
@@ -101,6 +102,7 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return enrollmentList;
     }
 
+    //get all the semester that student enrolled in
     public List<String> getStudentSemester(int studentIndex) {
         List<String> semesters = new ArrayList<>();
         String studentID = studentList.get(studentIndex).getId();
@@ -112,6 +114,8 @@ public class EnrolmentList implements StudentEnrollmentManager {
         return semesters;
     }
 
+
+    //Return a semester without duplicate
     public List<String> getCourseSemester(int courseIndex) {
         List<String> semesters = new ArrayList<>();
         List<String> uniqueSemesters = new ArrayList<>();
